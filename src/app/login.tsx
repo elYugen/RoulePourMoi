@@ -13,6 +13,7 @@ export default function Login() {
       footerText="Pas encore de compte ?"
       footerLinkLabel="Créer un compte"
       onFooterLinkPress={() => router.push("/signup")}
+      onSubmit={() => router.push("/client-home")}
     />
   );
 }

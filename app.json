@@ -32,6 +32,12 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "RoulePourMoi a besoin de votre position pour vous proposer un chauffeur à proximité."
+        }
       ]
     ],
     "experiments": {
