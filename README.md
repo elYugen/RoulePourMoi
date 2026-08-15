@@ -1,56 +1,88 @@
-# Welcome to your Expo app 👋
+<div align="center">
+  <img src="./assets/images/logo-big.png" alt="RoulePourMoi" width="360" />
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+  <p><strong>Votre trajet. Votre voiture. Nos chauffeurs.</strong></p>
 
-## Get started
+  <p>
+    <img src="https://img.shields.io/badge/Expo-SDK%2057-000020?logo=expo&logoColor=white" alt="Expo SDK 57" />
+    <img src="https://img.shields.io/badge/React%20Native-0.86-61DAFB?logo=react&logoColor=white" alt="React Native 0.86" />
+    <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white" alt="TypeScript strict" />
+    <img src="https://img.shields.io/badge/expo--router-file--based-6C5CE7" alt="expo-router" />
+  </p>
+</div>
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## À propos
 
-2. Start the app
+Chaque année en France, la conduite sous l'emprise de l'alcool ou de stupéfiants reste la première cause de mortalité sur la route : **29 % des accidents mortels**, plus de 1 000 vies perdues, 3,9 milliards d'euros de coût social par an. Les solutions existantes (taxi, VTC, transports en commun) savent ramener une personne chez elle — aucune ne sait ramener **la personne et son véhicule** en même temps. Résultat : de nombreux conducteurs reprennent le volant simplement pour récupérer leur voiture.
 
-   ```bash
-   npx expo start
-   ```
+**RoulePourMoi** comble ce manque. C'est une plateforme de mise en relation avec un réseau de chauffeurs professionnels : le chauffeur rejoint le client avec un moyen de transport léger et pliable (vélo, trottinette...), le range dans le coffre, puis conduit le client **jusqu'à chez lui avec sa propre voiture**. Le client retrouve son véhicule à sa porte, en toute sécurité — le chauffeur repart ensuite avec son moyen de transport pour une nouvelle mission.
 
-In the output, you'll find options to open the app in a
+> Le concept a déjà fait ses preuves à grande échelle en Chine avec eDaijia (200M+ utilisateurs, 1M+ chauffeurs partenaires). RoulePourMoi l'adapte au marché français : particuliers, entreprises, bars et restaurants, organisateurs d'événements, assureurs et collectivités.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Projet porté par **Alexandre Pomares**, ancien gendarme (~15 ans d'expérience en sécurité routière), fondateur de RoulePourMoi.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Fonctionnalités de l'app
 
-## Get a fresh project
+Le parcours actuellement implémenté dans cette app React Native :
 
-When you're ready, run:
+**Côté client**
+- Écran d'accueil (choix client / chauffeur, connexion)
+- Connexion et inscription client
 
-```bash
-npm run reset-project
+**Côté chauffeur**
+- Connexion et inscription chauffeur
+- Onboarding chauffeur en 4 étapes, avec suivi de progression :
+  1. **Documents** — envoi du permis, de l'attestation d'assurance, de la pièce d'identité et d'une photo de profil
+  2. **Formation** — carrousel pédagogique basé sur le support de formation officiel (rôle du chauffeur, sécurité routière, relation client, situations sensibles, premiers secours, procédures, valeurs de l'entreprise)
+  3. **Questionnaire** — quiz de validation des acquis, à choix multiples, avec score final
+  4. **Validation** — récapitulatif (score, statut formation/questionnaire) puis écran d'attente d'activation du compte
+
+L'ensemble de l'interface (couleurs, typographie, espacements, composants) suit un système de design partagé (`src/styles`) construit au fil du développement de l'app, pour rester cohérent et facile à étendre sur les prochains écrans.
+
+## Stack technique
+
+| | |
+|---|---|
+| Framework | [Expo](https://docs.expo.dev/versions/v57.0.0/) SDK 57 · React Native 0.86 · React 19 |
+| Navigation | [expo-router](https://docs.expo.dev/router/introduction/) (routing par fichiers) |
+| Langage | TypeScript (mode strict) |
+| Police | Raleway (via `expo-font`) |
+| Icônes | SVG inline (`react-native-svg`), issues de Bootstrap Icons ou dessinées sur mesure |
+| Style | `StyleSheet` React Native + design tokens maison (`src/styles`) |
+
+## Structure du projet
+
+```
+src/
+├── app/            # Écrans (routing par fichiers, expo-router)
+├── components/      # Composants UI réutilisables
+├── data/            # Contenus (slides formation, questions du quiz)
+└── styles/           # Design system : couleurs, typographie, espacements, styles partagés
+assets/
+├── fonts/            # Raleway
+├── icons/            # Icônes sources (SVG)
+└── images/           # Logo, visuels, illustrations
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Démarrage
 
-### Other setup steps
+```bash
+npm install
+npx expo start
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+Depuis la sortie de la commande, ouvrez le projet dans un [build de développement](https://docs.expo.dev/develop/development-builds/introduction/), un émulateur Android, un simulateur iOS, ou [Expo Go](https://expo.dev/go).
 
-## Learn more
+```bash
+npx expo start --android   # Android
+npx expo start --ios       # iOS
+npx expo start --web       # Web
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+---
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+<div align="center">
+  <sub>Sécurité · Innovation · Mobilité · Responsabilité</sub>
+</div>
