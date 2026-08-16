@@ -7,6 +7,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { persistor, store } from "../store";
+import { colors } from "../styles/colors";
 import { fontMap } from "../styles/typography";
 
 SplashScreen.preventAutoHideAsync();
@@ -28,7 +29,13 @@ export default function RootLayout() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }} />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              animation: "slide_from_right",
+              contentStyle: { backgroundColor: colors.background },
+            }}
+          />
         </SafeAreaProvider>
       </PersistGate>
     </Provider>

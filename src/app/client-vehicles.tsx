@@ -45,6 +45,7 @@ export default function ClientVehicles() {
         active="vehicles"
         onTabPress={(tab) => {
           if (tab === "home") router.push("/client-home");
+          if (tab === "profile") router.push("/client-profile");
         }}
       />
 

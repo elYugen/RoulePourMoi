@@ -59,6 +59,7 @@ export default function ClientHome() {
         active="home"
         onTabPress={(tab) => {
           if (tab === "vehicles") router.push("/client-vehicles");
+          if (tab === "profile") router.push("/client-profile");
         }}
       />
     </View>
