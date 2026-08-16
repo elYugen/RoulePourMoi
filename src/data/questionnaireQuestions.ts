@@ -4,7 +4,7 @@ export type QuizQuestion = {
   correctIndex: number;
 };
 
-// Imagined quiz questions covering the topics from assets/formation_chauffeurs.pdf
+// quizz récupéré de assets/formation_chauffeurs.pdf
 // (rôle du chauffeur, sécurité routière, relation client, situations sensibles,
 // premiers secours, procédures RoulePourMoi, formation continue, nos valeurs).
 export const QUESTIONNAIRE_QUESTIONS: QuizQuestion[] = [
@@ -29,8 +29,14 @@ export const QUESTIONNAIRE_QUESTIONS: QuizQuestion[] = [
     correctIndex: 1,
   },
   {
-    question: "Quelle est la tolérance de RoulePourMoi en matière d'alcool au volant ?",
-    options: ["Un verre maximum", "Tolérance zéro", "Selon la durée du trajet", "Aucune règle particulière"],
+    question:
+      "Quelle est la tolérance de RoulePourMoi en matière d'alcool au volant ?",
+    options: [
+      "Un verre maximum",
+      "Tolérance zéro",
+      "Selon la durée du trajet",
+      "Aucune règle particulière",
+    ],
     correctIndex: 1,
   },
   {
@@ -65,7 +71,12 @@ export const QUESTIONNAIRE_QUESTIONS: QuizQuestion[] = [
   },
   {
     question: "Face à une situation inattendue, quelle est la bonne attitude ?",
-    options: ["Paniquer", "Rester calme et évaluer la situation", "Abandonner la mission", "Appeler un ami"],
+    options: [
+      "Paniquer",
+      "Rester calme et évaluer la situation",
+      "Abandonner la mission",
+      "Appeler un ami",
+    ],
     correctIndex: 1,
   },
   {
@@ -79,7 +90,8 @@ export const QUESTIONNAIRE_QUESTIONS: QuizQuestion[] = [
     correctIndex: 2,
   },
   {
-    question: "Quel est le numéro d'urgence européen, valable depuis un portable ?",
+    question:
+      "Quel est le numéro d'urgence européen, valable depuis un portable ?",
     options: ["15", "17", "18", "112"],
     correctIndex: 3,
   },
@@ -125,7 +137,12 @@ export const QUESTIONNAIRE_QUESTIONS: QuizQuestion[] = [
   },
   {
     question: "Laquelle de ces valeurs fait partie des valeurs RoulePourMoi ?",
-    options: ["Confidentialité", "Rapidité à tout prix", "Compétition entre chauffeurs", "Improvisation"],
+    options: [
+      "Confidentialité",
+      "Rapidité à tout prix",
+      "Compétition entre chauffeurs",
+      "Improvisation",
+    ],
     correctIndex: 0,
   },
 ];
