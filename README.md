@@ -21,17 +21,17 @@ Chaque année en France, la conduite sous l'emprise de l'alcool ou de stupéfian
 
 > Le concept a déjà fait ses preuves à grande échelle en Chine avec eDaijia (200M+ utilisateurs, 1M+ chauffeurs partenaires). RoulePourMoi l'adapte au marché français : particuliers, entreprises, bars et restaurants, organisateurs d'événements, assureurs et collectivités.
 
-Projet porté par **Alexandre Pomares**, ancien gendarme (~15 ans d'expérience en sécurité routière), fondateur de RoulePourMoi.
-
 ## Fonctionnalités de l'app
 
 Le parcours actuellement implémenté dans cette app React Native :
 
 **Côté client**
+
 - Écran d'accueil (choix client / chauffeur, connexion)
 - Connexion et inscription client
 
 **Côté chauffeur**
+
 - Connexion et inscription chauffeur
 - Onboarding chauffeur en 4 étapes, avec suivi de progression :
   1. **Documents** — envoi du permis, de l'attestation d'assurance, de la pièce d'identité et d'une photo de profil
@@ -43,14 +43,14 @@ L'ensemble de l'interface (couleurs, typographie, espacements, composants) suit 
 
 ## Stack technique
 
-| | |
-|---|---|
-| Framework | [Expo](https://docs.expo.dev/versions/v57.0.0/) SDK 57 · React Native 0.86 · React 19 |
-| Navigation | [expo-router](https://docs.expo.dev/router/introduction/) (routing par fichiers) |
-| Langage | TypeScript (mode strict) |
-| Police | Raleway (via `expo-font`) |
-| Icônes | SVG inline (`react-native-svg`), issues de Bootstrap Icons ou dessinées sur mesure |
-| Style | `StyleSheet` React Native + design tokens maison (`src/styles`) |
+|            |                                                                                       |
+| ---------- | ------------------------------------------------------------------------------------- |
+| Framework  | [Expo](https://docs.expo.dev/versions/v57.0.0/) SDK 57 · React Native 0.86 · React 19 |
+| Navigation | [expo-router](https://docs.expo.dev/router/introduction/) (routing par fichiers)      |
+| Langage    | TypeScript (mode strict)                                                              |
+| Police     | Raleway (via `expo-font`)                                                             |
+| Icônes     | SVG inline (`react-native-svg`), issues de Bootstrap Icons ou dessinées sur mesure    |
+| Style      | `StyleSheet` React Native + design tokens maison (`src/styles`)                       |
 
 ## Structure du projet
 
@@ -65,23 +65,6 @@ assets/
 ├── icons/            # Icônes sources (SVG)
 └── images/           # Logo, visuels, illustrations
 ```
-
-## Démarrage
-
-```bash
-npm install
-npx expo start
-```
-
-Depuis la sortie de la commande, ouvrez le projet dans un [build de développement](https://docs.expo.dev/develop/development-builds/introduction/), un émulateur Android, un simulateur iOS, ou [Expo Go](https://expo.dev/go).
-
-```bash
-npx expo start --android   # Android
-npx expo start --ios       # iOS
-npx expo start --web       # Web
-```
-
----
 
 <div align="center">
   <sub>Sécurité · Innovation · Mobilité · Responsabilité</sub>
