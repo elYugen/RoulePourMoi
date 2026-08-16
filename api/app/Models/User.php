@@ -58,6 +58,16 @@ class User extends Authenticatable
         return $this->hasMany(Vehicle::class, 'driver_id');
     }
 
+    public function driverDocuments(): HasMany
+    {
+        return $this->hasMany(DriverDocument::class, 'driver_id');
+    }
+
+    public function validatedDocuments(): HasMany
+    {
+        return $this->hasMany(DriverDocument::class, 'validated_by');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

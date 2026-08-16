@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
         $this->call(VehicleBrandSeeder::class);
+        $this->call(VehicleTypeSeeder::class);
+        $this->call(DocumentTypeSeeder::class);
 
         // User::factory(10)->create();
 

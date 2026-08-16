@@ -1,24 +1,60 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { AddVehicleModal, NewVehicle } from "../components/AddVehicleModal";
+import { AddVehicleModal } from "../components/AddVehicleModal";
 import { BottomNavBar } from "../components/BottomNavBar";
 import { Icon } from "../components/Icon";
 import { VehicleRow } from "../components/VehicleRow";
-import { CLIENT_VEHICLES } from "../data/vehicles";
+import { getErrorMessage } from "../services/errors";
+import { listVehicleBrands, listVehicleTypes, listVehicles } from "../services/vehiclesApi";
+import type { Vehicle, VehicleBrand, VehicleType } from "../schemas/vehicles";
 import { colors } from "../styles/colors";
 import { spacing } from "../styles/spacing";
 import { fonts } from "../styles/typography";
 
 export default function ClientVehicles() {
   const router = useRouter();
-  const [vehicles, setVehicles] = useState(CLIENT_VEHICLES);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [vehicleTypes, setVehicleTypes] = useState<VehicleType[]>([]);
+  const [brands, setBrands] = useState<VehicleBrand[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isAddModalVisible, setAddModalVisible] = useState(false);
+  const [reloadToken, setReloadToken] = useState(0);
 
-  const handleAddVehicle = (vehicle: NewVehicle) => {
-    setVehicles((current) => [...current, { id: Date.now().toString(), ...vehicle }]);
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      setErrorMessage(null);
+      setLoading(true);
+      try {
+        const [vehiclesData, typesData, brandsData] = await Promise.all([
+          listVehicles(),
+          listVehicleTypes(),
+          listVehicleBrands(),
+        ]);
+        if (!cancelled) {
+          setVehicles(vehiclesData);
+          setVehicleTypes(typesData);
+          setBrands(brandsData);
+        }
+      } catch (error) {
+        if (!cancelled) setErrorMessage(getErrorMessage(error));
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadToken]);
+
+  const handleCreated = (vehicle: Vehicle) => {
+    setVehicles((current) => [vehicle, ...current]);
     setAddModalVisible(false);
   };
 
@@ -33,11 +69,33 @@ export default function ClientVehicles() {
             </Pressable>
           </View>
 
-          <View style={styles.list}>
-            {vehicles.map((vehicle) => (
-              <VehicleRow key={vehicle.id} name={vehicle.name} plate={vehicle.plate} onPress={() => {}} />
-            ))}
-          </View>
+          {loading ? (
+            <ActivityIndicator color={colors.accent} style={styles.stateBlock} />
+          ) : errorMessage ? (
+            <View style={styles.stateBlock}>
+              <Text style={styles.errorText}>{errorMessage}</Text>
+              <Pressable onPress={() => setReloadToken((token) => token + 1)}>
+                <Text style={styles.retryText}>Réessayer</Text>
+              </Pressable>
+            </View>
+          ) : vehicles.length === 0 ? (
+            <View style={styles.stateBlock}>
+              <Text style={styles.emptyText}>
+                Vous n&apos;avez pas encore ajouté de véhicule. Appuyez sur + pour en ajouter un.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.list}>
+              {vehicles.map((vehicle) => (
+                <VehicleRow
+                  key={vehicle.id}
+                  title={`${vehicle.brand.name} ${vehicle.model.name}`}
+                  subtitle={`${vehicle.registration} · ${vehicle.color}`}
+                  onPress={() => {}}
+                />
+              ))}
+            </View>
+          )}
         </ScrollView>
       </SafeAreaView>
 
@@ -51,8 +109,10 @@ export default function ClientVehicles() {
 
       <AddVehicleModal
         visible={isAddModalVisible}
+        vehicleTypes={vehicleTypes}
+        brands={brands}
         onClose={() => setAddModalVisible(false)}
-        onSubmit={handleAddVehicle}
+        onCreated={handleCreated}
       />
     </View>
   );
@@ -92,5 +152,27 @@ const styles = StyleSheet.create({
   },
   list: {
     gap: spacing.md,
+  },
+  stateBlock: {
+    alignItems: "center",
+    gap: spacing.sm,
+    paddingVertical: spacing.xxl,
+  },
+  emptyText: {
+    fontFamily: fonts.regular,
+    fontSize: 15,
+    color: colors.textSecondary,
+    textAlign: "center",
+  },
+  errorText: {
+    fontFamily: fonts.medium,
+    fontSize: 15,
+    color: colors.brandRed,
+    textAlign: "center",
+  },
+  retryText: {
+    fontFamily: fonts.semiBold,
+    fontSize: 15,
+    color: colors.accent,
   },
 });
