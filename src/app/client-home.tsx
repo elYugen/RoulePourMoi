@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import { ActivityIndicator, Pressable, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -12,6 +13,7 @@ import { spacing } from "../styles/spacing";
 import { fonts } from "../styles/typography";
 
 export default function ClientHome() {
+  const router = useRouter();
   const { height } = useWindowDimensions();
   const { coords, loading, errorMessage } = useCurrentLocation();
   const mapHeight = Math.round(height * 0.38);
@@ -53,7 +55,12 @@ export default function ClientHome() {
         </View>
       </View>
 
-      <BottomNavBar active="home" />
+      <BottomNavBar
+        active="home"
+        onTabPress={(tab) => {
+          if (tab === "vehicles") router.push("/client-vehicles");
+        }}
+      />
     </View>
   );
 }
@@ -95,6 +102,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.lg,
+    paddingBottom: 110,
   },
   searchBar: {
     backgroundColor: colors.surface,

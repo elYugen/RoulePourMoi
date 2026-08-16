@@ -30,12 +30,14 @@ export default function DriverOnboarding() {
 
   return (
     <Screen scroll contentContainerStyle={styles.content}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Inscription en tant que chauffeur</Text>
-        <Text style={styles.headerSubtitle}>Rejoignez la communauté</Text>
-      </View>
+      {step !== 4 ? (
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Inscription en tant que chauffeur</Text>
+          <Text style={styles.headerSubtitle}>Rejoignez la communauté</Text>
+        </View>
+      ) : null}
 
-      <Stepper steps={STEPS} currentStep={step} />
+      {step !== 4 ? <Stepper steps={STEPS} currentStep={step} /> : null}
 
       {step === 1 ? (
         <DocumentsStep />
@@ -49,6 +51,7 @@ export default function DriverOnboarding() {
           total={quizResult.total}
           onContinue={() => router.push("/driver-pending-validation")}
           onDownloadFormation={() => {}}
+          onBackToFormation={() => setStep(2)}
         />
       )}
 

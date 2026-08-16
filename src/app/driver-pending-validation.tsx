@@ -59,10 +59,10 @@ export default function DriverPendingValidation() {
         ))}
       </View>
 
-      <PrimaryButton label="Retour à l'accueil" onPress={() => router.replace("/")} />
+      <PrimaryButton label="Aller sur l'espace client" onPress={() => router.replace("/client-home")} />
 
       <Pressable onPress={() => router.replace("/")}>
-        <Text style={styles.logoutLink}>Se déconnecter</Text>
+        <Text style={styles.logoutLink}>Retour à l'accueil</Text>
       </Pressable>
     </Screen>
   );

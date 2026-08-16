@@ -6,15 +6,53 @@ import { fonts } from "../styles/typography";
 import { Icon } from "./Icon";
 import { PrimaryButton } from "./PrimaryButton";
 
+const MINIMUM_CORRECT_ANSWERS = 10;
+
 type ValidationSummaryProps = {
   score: number;
   total: number;
   onContinue: () => void;
   onDownloadFormation?: () => void;
+  onBackToFormation?: () => void;
 };
 
-export function ValidationSummary({ score, total, onContinue, onDownloadFormation }: ValidationSummaryProps) {
+export function ValidationSummary({
+  score,
+  total,
+  onContinue,
+  onDownloadFormation,
+  onBackToFormation,
+}: ValidationSummaryProps) {
   const percent = Math.round((score / total) * 100);
+  const passed = score >= MINIMUM_CORRECT_ANSWERS;
+
+  if (!passed) {
+    return (
+      <View style={styles.wrapper}>
+        <View style={styles.badgeCircle}>
+          <Icon name="patch-check" size={130} color={colors.brandRed} />
+        </View>
+
+        <View style={styles.headerText}>
+          <Text style={styles.title}>Questionnaire non validé</Text>
+          <Text style={styles.subtitle}>
+            Vous devez obtenir au moins {MINIMUM_CORRECT_ANSWERS}/{total} bonnes réponses pour valider le
+            questionnaire.
+          </Text>
+        </View>
+
+        <View style={styles.scoreCard}>
+          <Text style={styles.scoreLabel}>Votre score</Text>
+          <Text style={styles.scoreValue}>
+            {score} / {total}
+          </Text>
+          <Text style={styles.scorePercent}>{percent}% de bonnes réponses</Text>
+        </View>
+
+        <PrimaryButton label="Retour à la formation" onPress={onBackToFormation} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.wrapper}>

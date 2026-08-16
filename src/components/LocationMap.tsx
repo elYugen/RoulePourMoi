@@ -27,7 +27,22 @@ function buildMapHtml({ latitude, longitude }: Coordinates) {
         border: 3px solid #ffffff;
         box-shadow: 0 0 0 6px rgba(74, 144, 226, 0.3);
       }
-      .leaflet-control-attribution { font-size: 9px; }
+      .leaflet-control-attribution {
+        font-size: 9px;
+        background: rgba(27, 23, 48, 0.8);
+        color: ${colors.textMuted};
+      }
+      .leaflet-control-attribution a { color: ${colors.textSecondary}; }
+      .leaflet-tile-pane { filter: brightness(1.55) contrast(0.92); }
+      .map-tint {
+        position: absolute;
+        inset: 0;
+        z-index: 350;
+        background: ${colors.accent};
+        opacity: 0.45;
+        mix-blend-mode: color;
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
@@ -35,12 +50,17 @@ function buildMapHtml({ latitude, longitude }: Coordinates) {
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
       const map = L.map('map', { zoomControl: false }).setView([${latitude}, ${longitude}], 16);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors © CARTO',
+        subdomains: 'abcd',
         maxZoom: 19,
       }).addTo(map);
       const icon = L.divIcon({ className: '', html: '<div class="location-dot"></div>', iconSize: [18, 18] });
       L.marker([${latitude}, ${longitude}], { icon }).addTo(map);
+
+      const tint = document.createElement('div');
+      tint.className = 'map-tint';
+      document.getElementById('map').appendChild(tint);
     </script>
   </body>
 </html>`;
