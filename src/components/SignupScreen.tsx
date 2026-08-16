@@ -2,8 +2,10 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import { colors } from "../styles/colors";
 import { shared } from "../styles/shared";
 import { spacing } from "../styles/spacing";
+import { fonts } from "../styles/typography";
 import { BackButton } from "./BackButton";
 import { Checkbox } from "./Checkbox";
 import { PrimaryButton } from "./PrimaryButton";
@@ -23,6 +25,8 @@ type SignupScreenProps = {
   submitLabel: string;
   footerText: string;
   footerLinkLabel: string;
+  loading?: boolean;
+  errorMessage?: string | null;
   onSubmit?: (values: SignupValues) => void;
   onFooterLinkPress?: () => void;
 };
@@ -32,6 +36,8 @@ export function SignupScreen({
   submitLabel,
   footerText,
   footerLinkLabel,
+  loading,
+  errorMessage,
   onSubmit,
   onFooterLinkPress,
 }: SignupScreenProps) {
@@ -86,10 +92,13 @@ export function SignupScreen({
         </Text>
       </View>
 
+      {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
+
       <View style={styles.actions}>
         <PrimaryButton
-          label={submitLabel}
+          label={loading ? "Chargement..." : submitLabel}
           onPress={() => onSubmit?.({ firstName, lastName, email, phone, password })}
+          disabled={loading}
         />
         <View style={shared.shortDivider} />
       </View>
@@ -124,6 +133,13 @@ const styles = StyleSheet.create({
   terms: {
     alignItems: "flex-start",
     marginTop: spacing.md,
+  },
+  errorText: {
+    marginTop: spacing.md,
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    color: colors.brandRed,
+    textAlign: "center",
   },
   actions: {
     alignItems: "center",

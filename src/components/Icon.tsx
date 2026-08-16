@@ -123,6 +123,7 @@ const CUSTOM_ICONS = {
   "steering-wheel": SteeringWheel,
   camera: Camera,
   plus: Plus,
+  pencil: Pencil,
 } as const;
 
 type CustomIconName = keyof typeof CUSTOM_ICONS;
@@ -179,6 +180,17 @@ function Plus({ size, color }: { size: number; color: string }) {
     <Svg width={size} height={size} viewBox="0 0 16 16">
       <Line x1={8} y1={2.5} x2={8} y2={13.5} stroke={color} strokeWidth={1.6} strokeLinecap="round" />
       <Line x1={2.5} y1={8} x2={13.5} y2={8} stroke={color} strokeWidth={1.6} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+function Pencil({ size, color }: { size: number; color: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 16 16">
+      <Path
+        fill={color}
+        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-9 9a.5.5 0 0 1-.263.139l-4 .8a.5.5 0 0 1-.588-.588l.8-4a.5.5 0 0 1 .139-.263zM11.207 2.5 2.5 11.207l-.564 2.828 2.828-.564L13.5 4.793zM12.5 1.5l2 2"
+      />
     </Svg>
   );
 }

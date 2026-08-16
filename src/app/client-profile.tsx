@@ -1,19 +1,20 @@
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { ActivityIndicator, Alert, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { Icon } from "../components/Icon";
 import { BottomNavBar } from "../components/BottomNavBar";
 import { ProfileMenuRow } from "../components/ProfileMenuRow";
+import { logout as logoutRequest } from "../services/authApi";
+import { getErrorMessage } from "../services/errors";
+import { uploadAvatar } from "../services/profileApi";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { logout as clearCredentials, updateUser } from "../store/slices/authSlice";
 import { colors } from "../styles/colors";
 import { spacing } from "../styles/spacing";
 import { fonts } from "../styles/typography";
-
-const USER = {
-  name: "Jean Michel",
-  // Photo provisoire générée via pravatar.cc (API gratuite, sans clé) en attendant
-  // la vraie photo de profil de l'utilisateur.
-  avatarUrl: "https://i.pravatar.cc/300?u=jean.michel",
-};
 
 const MENU_ITEMS = [
   "Gérer mes informations",
@@ -27,6 +28,55 @@ const MENU_ITEMS = [
 
 export default function ClientProfile() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
+  const [uploading, setUploading] = useState(false);
+
+  // Photo provisoire générée via pravatar.cc (API gratuite, sans clé) tant que
+  // l'utilisateur n'a pas encore uploadé de vraie photo de profil.
+  const avatarUrl = user?.avatar_url ?? `https://i.pravatar.cc/300?u=${user?.uuid ?? "guest"}`;
+
+  const handleLogout = async () => {
+    try {
+      await logoutRequest();
+    } catch {
+      // Le token est peut-être déjà expiré côté serveur : on déconnecte quand même localement.
+    }
+    dispatch(clearCredentials());
+    router.replace("/");
+  };
+
+  const handleChangeAvatar = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert("Autorisation requise", "Autorise l'accès à tes photos pour changer ta photo de profil.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    const asset = result.assets?.[0];
+    if (result.canceled || !asset) return;
+
+    setUploading(true);
+    try {
+      const updatedUser = await uploadAvatar({
+        uri: asset.uri,
+        name: asset.fileName ?? "avatar.jpg",
+        type: asset.mimeType ?? "image/jpeg",
+      });
+      dispatch(updateUser(updatedUser));
+    } catch (error) {
+      Alert.alert("Erreur", getErrorMessage(error));
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <View style={styles.screen}>
@@ -35,8 +85,22 @@ export default function ClientProfile() {
           <Text style={styles.title}>Mon profil</Text>
 
           <View style={styles.identity}>
-            <Image source={{ uri: USER.avatarUrl }} style={styles.avatar} />
-            <Text style={styles.name}>{USER.name}</Text>
+            <View style={styles.avatarWrapper}>
+              <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+
+              {uploading ? (
+                <View style={styles.avatarOverlay}>
+                  <ActivityIndicator color={colors.textPrimary} />
+                </View>
+              ) : null}
+
+              <Pressable style={styles.editBadge} onPress={handleChangeAvatar} disabled={uploading}>
+                <Icon name="pencil" size={16} color={colors.textPrimary} />
+              </Pressable>
+            </View>
+            <Text style={styles.name}>
+              {user ? `${user.firstname} ${user.lastname}` : "Utilisateur"}
+            </Text>
           </View>
 
           <View style={styles.menu}>
@@ -46,7 +110,7 @@ export default function ClientProfile() {
             <ProfileMenuRow label="Devenir chauffeur" onPress={() => router.push("/driver-login")} />
           </View>
 
-          <Pressable onPress={() => router.replace("/")}>
+          <Pressable onPress={handleLogout}>
             <Text style={styles.logoutLink}>Se déconnecter</Text>
           </Pressable>
         </ScrollView>
@@ -87,11 +151,39 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: spacing.md,
   },
+  avatarWrapper: {
+    width: 130,
+    height: 130,
+  },
   avatar: {
     width: 130,
     height: 130,
     borderRadius: 65,
     backgroundColor: colors.iconCircle,
+  },
+  avatarOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: 65,
+    backgroundColor: "rgba(0,0,0,0.45)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  editBadge: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.accent,
+    borderWidth: 3,
+    borderColor: colors.background,
+    alignItems: "center",
+    justifyContent: "center",
   },
   name: {
     fontFamily: fonts.medium,

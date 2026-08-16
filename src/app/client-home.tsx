@@ -7,6 +7,7 @@ import { LocationMap } from "../components/LocationMap";
 import { PlaceRow } from "../components/PlaceRow";
 import { SAVED_PLACES } from "../data/savedPlaces";
 import { useCurrentLocation } from "../hooks/useCurrentLocation";
+import { useAppSelector } from "../store/hooks";
 import { colors } from "../styles/colors";
 import { shared } from "../styles/shared";
 import { spacing } from "../styles/spacing";
@@ -17,12 +18,16 @@ export default function ClientHome() {
   const { height } = useWindowDimensions();
   const { coords, loading, errorMessage } = useCurrentLocation();
   const mapHeight = Math.round(height * 0.38);
+  const user = useAppSelector((state) => state.auth.user);
 
   return (
     <View style={styles.screen}>
       <SafeAreaView edges={["top"]}>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Bonjour,{"\n"}Où allez-vous ?</Text>
+          <Text style={styles.greeting}>
+            Bonjour{user ? `, ${user.firstname}` : ","}
+            {"\n"}Où allez-vous ?
+          </Text>
         </View>
       </SafeAreaView>
 

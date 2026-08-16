@@ -38,6 +38,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "RoulePourMoi a besoin de votre position pour vous proposer un chauffeur à proximité."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "RoulePourMoi a besoin d'accéder à vos photos pour changer votre photo de profil."
+        }
       ]
     ],
     "experiments": {

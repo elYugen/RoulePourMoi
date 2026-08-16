@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('token_hash')->unique();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->foreignId('device_id')->constrained('user_devices')->cascadeOnDelete();
+            $table->foreignId('device_id')->nullable()->constrained('user_devices')->nullOnDelete();
             $table->timestamp('last_activity_at')->useCurrent();
             $table->timestamp('expires_at');
             $table->timestamp('created_at')->useCurrent();

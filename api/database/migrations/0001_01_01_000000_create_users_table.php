@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone', 30)->unique();
             $table->string('password');
-            $table->date('birth_date');
+            $table->date('birth_date')->nullable();
             $table->enum('status', ['active', 'suspended', 'banned', 'pending']);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();

@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany(UserSession::class);
     }
 
+    public function vehicles(): HasMany
+    {
+        return $this->hasMany(Vehicle::class, 'driver_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

@@ -114,4 +114,16 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Token Lifetime
+    |--------------------------------------------------------------------------
+    |
+    | Number of days a user_sessions token stays valid after being issued
+    | by the API auth endpoints (register/login).
+    |
+    */
+
+    'token_ttl_days' => env('AUTH_TOKEN_TTL_DAYS', 60),
+
 ];

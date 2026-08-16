@@ -18,6 +18,8 @@ type AuthScreenProps = {
   submitLabel: string;
   footerText: string;
   footerLinkLabel: string;
+  loading?: boolean;
+  errorMessage?: string | null;
   onSubmit?: (values: { emailOrPhone: string; password: string }) => void;
   onFooterLinkPress?: () => void;
 };
@@ -28,6 +30,8 @@ export function AuthScreen({
   submitLabel,
   footerText,
   footerLinkLabel,
+  loading,
+  errorMessage,
   onSubmit,
   onFooterLinkPress,
 }: AuthScreenProps) {
@@ -57,10 +61,16 @@ export function AuthScreen({
         <Pressable>
           <Text style={styles.forgotPassword}>Mot de passe oublié ?</Text>
         </Pressable>
+
+        {errorMessage ? <Text style={styles.errorText}>{errorMessage}</Text> : null}
       </View>
 
       <View style={styles.actions}>
-        <PrimaryButton label={submitLabel} onPress={() => onSubmit?.({ emailOrPhone, password })} />
+        <PrimaryButton
+          label={loading ? "Chargement..." : submitLabel}
+          onPress={() => onSubmit?.({ emailOrPhone, password })}
+          disabled={loading}
+        />
 
         <Text style={styles.orText}>Ou continuer avec</Text>
 
@@ -101,6 +111,11 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     fontSize: 15,
     color: colors.textPrimary,
+  },
+  errorText: {
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    color: colors.brandRed,
   },
   actions: {
     alignItems: "center",
