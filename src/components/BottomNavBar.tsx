@@ -79,8 +79,8 @@ function TabItems({ tabs, active, onTabPress }: TabItemsProps) {
             style={({ pressed }) => [styles.tab, pressed && styles.tabPressed]}
             onPress={() => onTabPress?.(tab.key)}
           >
-            <View style={[styles.iconWrap, isActive && styles.iconWrapActive]}>
-              <Icon name={tab.icon} size={20} color={color} />
+            <View style={styles.iconWrap}>
+              <Icon name={tab.icon} size={25} color={color} />
             </View>
             <Text style={[styles.label, { color }, isActive && styles.labelActive]} numberOfLines={1}>
               {tab.label}
@@ -131,17 +131,13 @@ const styles = StyleSheet.create({
   },
   iconWrap: {
     width: 40,
-    height: 30,
-    borderRadius: radius.pill,
+    height: 32,
     alignItems: "center",
     justifyContent: "center",
   },
-  iconWrapActive: {
-    backgroundColor: colors.iconCircle,
-  },
   label: {
     fontFamily: fonts.medium,
-    fontSize: 11,
+    fontSize: 13,
   },
   labelActive: {
     fontFamily: fonts.semiBold,
